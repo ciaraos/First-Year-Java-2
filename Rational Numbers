@@ -1,0 +1,101 @@
+import java.io.IOException;
+
+public class calculations {
+	private int numerator;
+	private int denominator;
+
+	calculations(int numerator) {
+		this.numerator = numerator;
+		this.denominator = 1;
+	}
+
+	calculations(int numerator, int denominator) throws IOException {
+		if (denominator == 0) {
+			throw new IOException();
+		}
+		this.numerator = numerator;
+		this.denominator = denominator;
+	}
+
+	public calculations add(calculations givenRational) throws IOException {
+		int numeratorAns = (this.numerator * givenRational.denominator) + (this.denominator * givenRational.numerator);
+		int denominatorAns = (this.denominator * givenRational.denominator);
+		calculations addition = new calculations(numeratorAns, denominatorAns);
+		System.out.println(numerator + "/" + denominator + " + " + givenRational.numerator + "/"
+				+ givenRational.denominator + " = " + addition.simplify());
+		return addition;
+	}
+
+	public calculations subtract(calculations givenRational) throws IOException {
+		int numeratorAns = (this.numerator * givenRational.denominator) - (this.denominator * givenRational.numerator);
+		int denominatorAns = (this.denominator * givenRational.denominator);
+		calculations subtraction = new calculations(numeratorAns, denominatorAns);
+		System.out.println(numerator + "/" + denominator + " - " + givenRational.numerator + "/"
+				+ givenRational.denominator + " = " + subtraction.simplify());
+		return subtraction;
+	}
+
+	public calculations multiply(calculations givenRational) throws IOException {
+		int commonDenominator = (this.denominator * givenRational.denominator);
+		int numeratorAns = (this.numerator * givenRational.numerator);
+		calculations multiplication = new calculations(numeratorAns, commonDenominator);
+		System.out.println(numerator + "/" + denominator + " * " + givenRational.numerator + "/"
+				+ givenRational.denominator + " = " + multiplication.simplify());
+		return multiplication;
+	}
+
+	public calculations divide(calculations givenRational) throws IOException {
+		int numeratorAns = this.numerator * givenRational.denominator;
+		int denominatorAns = this.denominator * givenRational.numerator;
+		calculations division = new calculations(numeratorAns, denominatorAns);
+		System.out.println(numerator + "/" + denominator + " � " + givenRational.numerator + "/"
+				+ givenRational.denominator + " = " + division.simplify());
+		return division;
+	}
+
+	public boolean equals(calculations givenRational) {
+		boolean isEqual = false;
+		if (givenRational == null) {
+			isEqual = false;
+		} else if (givenRational instanceof calculations == false) {
+			isEqual = false;
+		}
+		calculations checkFraction = (calculations) givenRational;
+		if (this.numerator == checkFraction.numerator && this.denominator == checkFraction.denominator) {
+			isEqual = true;
+		}
+		return isEqual;
+	}
+
+	public boolean isLessThan(calculations givenRational) {
+		boolean lessThan = false;
+		if (this.numerator * givenRational.denominator < this.denominator + givenRational.numerator) {
+			lessThan = true;
+		} else if (this.numerator * givenRational.denominator > this.denominator * givenRational.numerator) {
+			lessThan = false;
+		}
+		return lessThan;
+	}
+
+	public int greatestDivisor(int numerator, int denominator) {
+		if (denominator == 0)
+			return numerator;
+		return greatestDivisor(denominator, numerator % denominator);
+	}
+
+	public calculations simplify() throws IOException {
+		int gcd = greatestDivisor(this.numerator, this.denominator);
+		int denominatorAns = this.denominator / gcd;
+		int numeratorAns = this.numerator / gcd;
+		calculations simpleAnswer = new calculations(numeratorAns, denominatorAns);
+		simpleAnswer.toString();
+		return simpleAnswer;
+	}
+
+	public String toString() {
+		if (this.denominator > 1)
+			return this.numerator + "/" + this.denominator;
+		else
+			return this.numerator + "";
+	}
+}
